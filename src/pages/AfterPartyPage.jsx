@@ -135,7 +135,7 @@ export default function AfterPartyPage() {
       {/* ── Footer ── */}
       <footer className={styles.footer}>
         <Link to="/" className={styles.footerLink}>← Return to Wedding Details</Link>
-        <p>Emma & James · 14 June 2025 · Wicklow, Ireland</p>
+        <p>Debbie & Jason · 14 June 2025 · Wicklow, Ireland</p>
       </footer>
 
     </div>

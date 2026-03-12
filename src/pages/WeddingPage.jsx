@@ -116,7 +116,7 @@ export default function WeddingPage() {
 
       {/* ── Footer ── */}
       <footer className={styles.footer}>
-        <p>Emma & James · 14 June 2025 · Wicklow, Ireland</p>
+        <p>Debbie & Jason · 14 June 2025 · Wicklow, Ireland</p>
       </footer>
 
     </div>
