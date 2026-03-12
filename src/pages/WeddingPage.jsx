@@ -35,7 +35,7 @@ export default function WeddingPage() {
             <p>Urban Brewing</p>
             <p>CHQ Building, Custom House Quay, IFSC</p>
             <p>Dublin, D01 Y6P5</p>
-            <p><a href="https://maps.app.goo.gl/BRx5t59BWMYhSsfR6" target="_blank" rel="noopener noreferrer" className={styles.mapLink}>maps</a></p>
+            <p><a href="https://maps.app.goo.gl/BRx5t59BWMYhSsfR6" target="_blank" rel="noopener noreferrer" className={styles.mapLink}>map</a></p>
           </div>
           <div className={styles.detailCard}>
             <span className={styles.detailTitle}>Time</span>
