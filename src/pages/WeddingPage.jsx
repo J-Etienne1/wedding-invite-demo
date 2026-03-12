@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import styles from './WeddingPage.module.css'
 
 // ── Replace this with your actual Google Form URL ──────────────────────────
-const GOOGLE_FORM_URL = 'https://forms.google.com/your-form-id-here'
+const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeZqqP81W9EG8mtIZ5Wm4OXZsELwUyZ490WjTE4aqT4HOZ8sA/viewform?usp=publish-editor'
 // ──────────────────────────────────────────────────────────────────────────
 
 export default function WeddingPage() {
