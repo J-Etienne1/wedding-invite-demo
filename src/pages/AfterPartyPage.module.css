@@ -1,0 +1,226 @@
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ── Nav ── */
+.nav {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.backLink {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.backLink:hover { color: var(--blood-bright); }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+}
+
+.eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.9s ease 0.1s both;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 7rem);
+  line-height: 1;
+  color: var(--ash);
+  text-shadow: 0 0 60px rgba(139, 26, 26, 0.4);
+  animation: fadeUp 0.9s ease 0.2s both;
+}
+
+.subheading {
+  margin-top: 1rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--blood-bright);
+  animation: fadeUp 0.9s ease 0.35s both;
+  animation: flicker 5s ease-in-out infinite, fadeUp 0.9s ease 0.35s both;
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 360px;
+  margin: 3.5rem auto;
+  padding: 0 2rem;
+}
+
+.dividerLine {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+
+.dividerIcon {
+  font-size: 0.6rem;
+  color: var(--blood-bright);
+}
+
+/* ── Sections ── */
+.section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  animation: fadeIn 0.9s ease 0.4s both;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--blood-bright);
+  margin-bottom: 2rem;
+}
+
+/* ── Details grid ── */
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 500px) {
+  .detailsGrid { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+.detailCard {
+  border-left: 1px solid var(--border);
+  padding-left: 1.5rem;
+}
+
+.detailTitle {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ash);
+  margin-bottom: 0.6rem;
+}
+
+.detailCard p {
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--ash-dim);
+}
+
+/* ── Accommodation ── */
+.accomIntro {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--ash-dim);
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+}
+
+.hotelList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.hotelCard {
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--blood-dim);
+  padding: 1.5rem 2rem;
+  background: var(--surface);
+  transition: border-left-color 0.3s ease, background 0.3s ease;
+}
+
+.hotelCard:hover {
+  border-left-color: var(--blood-bright);
+  background: var(--surface-raised);
+}
+
+.hotelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.hotelName {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: var(--ash);
+}
+
+.hotelPrice {
+  font-size: 0.75rem;
+  color: var(--ash-dim);
+  white-space: nowrap;
+}
+
+.hotelDistance {
+  font-size: 0.78rem;
+  color: var(--ash-faint);
+  margin-bottom: 0.5rem;
+}
+
+.hotelNote {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--blood-bright);
+  margin-bottom: 0.75rem;
+}
+
+.hotelPhone {
+  font-size: 0.82rem;
+  color: var(--ash-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1px;
+  transition: color 0.2s ease;
+}
+
+.hotelPhone:hover { color: var(--ash); }
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footerLink {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ash-dim);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footerLink:hover { color: var(--blood-bright); }
+
+.footer p {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--ash-faint);
+}

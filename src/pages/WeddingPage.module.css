@@ -1,0 +1,247 @@
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ── Decorative fixed corner borders ── */
+.page::before,
+.page::after {
+  content: '';
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  border-color: var(--blood);
+  border-style: solid;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 100;
+}
+.page::before { top: 20px; left: 20px; border-width: 1px 0 0 1px; }
+.page::after  { top: 20px; right: 20px; border-width: 1px 1px 0 0; }
+
+/* ── Hero ── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 6rem;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--blood), transparent);
+}
+
+.eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  margin-bottom: 2.5rem;
+  animation: fadeUp 1.2s ease 0.2s both;
+}
+
+.names {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 13vw, 9.5rem);
+  line-height: 1;
+  color: var(--ash);
+  animation: fadeUp 1.2s ease 0.4s both;
+  text-shadow: 0 0 80px rgba(139, 26, 26, 0.5);
+}
+
+.ampersand {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--blood-bright);
+  font-size: 0.5em;
+  line-height: 1.4;
+  animation: flicker 4s ease-in-out infinite;
+}
+
+.date {
+  margin-top: 2rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ash-dim);
+  letter-spacing: 0.08em;
+  animation: fadeUp 1.2s ease 0.6s both;
+}
+
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+}
+
+.dividerLine {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+
+.dividerIcon {
+  font-size: 0.6rem;
+  color: var(--blood-bright);
+  letter-spacing: 0.3em;
+}
+
+/* ── Sections ── */
+.section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  animation: fadeIn 1s ease 0.5s both;
+}
+
+.sectionLabel {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--blood-bright);
+  margin-bottom: 2rem;
+}
+
+/* ── Details grid ── */
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 500px) {
+  .detailsGrid { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+
+.detailCard {
+  border-left: 1px solid var(--border);
+  padding-left: 1.5rem;
+}
+
+.detailTitle {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ash);
+  margin-bottom: 0.6rem;
+}
+
+.detailCard p {
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--ash-dim);
+}
+
+/* ── RSVP block ── */
+.rsvpBlock {
+  text-align: center;
+  padding: 3rem 2rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+}
+
+.rsvpBlock::before,
+.rsvpBlock::after {
+  content: '✦';
+  position: absolute;
+  font-size: 0.6rem;
+  color: var(--blood-dim);
+  top: -0.45rem;
+  background: var(--surface);
+  padding: 0 0.5rem;
+}
+.rsvpBlock::before { left: 2rem; }
+.rsvpBlock::after  { right: 2rem; }
+
+.rsvpText {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+  color: var(--ash);
+}
+
+.rsvpText strong {
+  font-weight: 400;
+  color: var(--blood-bright);
+}
+
+.rsvpSub {
+  font-size: 0.82rem;
+  color: var(--ash-dim);
+  line-height: 1.8;
+  max-width: 400px;
+  margin: 0 auto 2rem;
+}
+
+.rsvpButton {
+  display: inline-block;
+  padding: 0.85rem 3rem;
+  border: 1px solid var(--blood);
+  color: var(--ash);
+  text-decoration: none;
+  font-size: 0.7rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.rsvpButton:hover {
+  background: var(--blood);
+  border-color: var(--blood-bright);
+}
+
+/* ── After party teaser ── */
+.afterPartyTeaser {
+  text-align: center;
+  padding: 1rem 0 5rem;
+}
+
+.eyebrowSmall {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  margin-bottom: 1.2rem;
+}
+
+.afterPartyLink {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--ash);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ash-faint);
+  padding-bottom: 3px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.afterPartyLink:hover {
+  color: var(--blood-bright);
+  border-color: var(--blood);
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--ash-faint);
+  border-top: 1px solid var(--border-subtle);
+}

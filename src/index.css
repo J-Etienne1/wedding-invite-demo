@@ -1,0 +1,61 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --void: #0a0608;
+  --dark: #110d0f;
+  --surface: #1a1318;
+  --surface-raised: #221820;
+  --blood: #8b1a1a;
+  --blood-bright: #b52222;
+  --blood-dim: #5a1010;
+  --ash: #c4b8bc;
+  --ash-dim: #7a6e72;
+  --ash-faint: #3a2e32;
+  --crimson-glow: rgba(139, 26, 26, 0.15);
+  --border: rgba(139, 26, 26, 0.25);
+  --border-subtle: rgba(196, 184, 188, 0.08);
+  --font-display: 'UnifrakturMaguntia', cursive;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-body: 'Jost', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  background-color: var(--void);
+  color: var(--ash);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Candlelight vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(139,26,26,0.06) 0%, transparent 65%),
+              radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.85; }
+}
