@@ -29,19 +29,20 @@ export default function WeddingPage() {
 
       {/* ── Ceremony details ── */}
       <section className={styles.section}>
-        <span className={styles.sectionLabel}>Ceremony</span>
+        <span className={styles.sectionLabel}><s>Ceremony</s> Party</span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
             <span className={styles.detailTitle}>Venue</span>
-            <p>St. Mary's Church</p>
-            <p>Church Lane, Ashford</p>
-            <p>Co. Wicklow, Ireland</p>
+            <p>Urban Brewing</p>
+            <p>CHQ Building, Custom House Quay, IFSC</p>
+            <p>Dublin, D01 Y6P5</p>
+            <p><a href="https://maps.app.goo.gl/BRx5t59BWMYhSsfR6" target="_blank" rel="noopener noreferrer" className={styles.mapLink}>maps</a></p>
           </div>
           <div className={styles.detailCard}>
             <span className={styles.detailTitle}>Time</span>
-            <p>Ceremony at 2:00pm</p>
-            <p>Drinks reception 3:30pm</p>
-            <p>Dinner at 6:00pm</p>
+            <p><s>Ceremony</s>  Party at 2:00pm</p>
+            <p>Drinks reception 6:30pm</p>
+            <p>Dinner at 8:00pm</p>
           </div>
         </div>
       </section>

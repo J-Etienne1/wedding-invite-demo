@@ -259,3 +259,16 @@
   color: var(--ash);
   border-color: var(--ash-dim);
 }
+
+.mapLink {
+  color: var(--blood-bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--blood-dim);
+  font-size: 0.85rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.mapLink:hover {
+  color: var(--ash);
+  border-color: var(--ash-dim);
+}
