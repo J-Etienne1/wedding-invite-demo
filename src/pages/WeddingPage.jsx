@@ -14,9 +14,9 @@ export default function WeddingPage() {
       <section className={styles.hero}>
         <p className={styles.eyebrow}>You are cordially summoned to witness the union of</p>
         <h1 className={styles.names}>
-          Emma
+          Debbie
           <span className={styles.ampersand}>&</span>
-          James
+          Jason
         </h1>
         <p className={styles.date}>Saturday, the 14th of June, 2025</p>
       </section>
