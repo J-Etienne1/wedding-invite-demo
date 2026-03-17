@@ -4,6 +4,22 @@
   min-height: 100vh;
 }
 
+/* ── Skip link ── */
+.skipLink {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--blood);
+  color: var(--ash);
+  font-size: 0.8rem;
+  z-index: 1000;
+  text-decoration: none;
+}
+.skipLink:focus {
+  top: 1rem;
+}
+
 /* ── Nav ── */
 .nav {
   padding: 1.5rem 2rem;
@@ -41,7 +57,10 @@
   font-size: clamp(3rem, 10vw, 7rem);
   line-height: 1;
   color: var(--ash);
-  text-shadow: 0 0 60px rgba(139, 26, 26, 0.4);
+  text-shadow:
+    0 0 60px rgba(139, 26, 26, 0.4),
+    0 0 120px rgba(107, 63, 160, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.8);
   animation: fadeUp 0.9s ease 0.2s both;
 }
 
@@ -51,7 +70,6 @@
   font-style: italic;
   font-size: 1.2rem;
   color: var(--blood-bright);
-  animation: fadeUp 0.9s ease 0.35s both;
   animation: flicker 5s ease-in-out infinite, fadeUp 0.9s ease 0.35s both;
 }
 
@@ -59,20 +77,40 @@
 .divider {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
-  max-width: 360px;
+  max-width: 700px;
   margin: 3.5rem auto;
   padding: 0 2rem;
 }
 
 .dividerLine {
-  flex: 1; height: 1px;
+  flex: 1;
+  height: 1px;
   background: linear-gradient(to right, transparent, var(--border), transparent);
 }
 
 .dividerIcon {
-  font-size: 0.6rem;
-  color: var(--blood-bright);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8em;
+  font-size: 0.85rem;
+  color: var(--ash);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dividerIcon > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+  line-height: 1;
+}
+
+.invertedCross {
+  transform: rotate(180deg);
 }
 
 /* ── Sections ── */
@@ -104,8 +142,13 @@
 }
 
 .detailCard {
-  border-left: 1px solid var(--border);
-  padding-left: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  transition: border-top-color 0.4s ease;
+}
+
+.detailCard:hover {
+  border-top-color: var(--ash-dim);
 }
 
 .detailTitle {
@@ -174,7 +217,7 @@
 
 .hotelDistance {
   font-size: 0.78rem;
-  color: var(--ash-faint);
+  color: var(--ash-dim);
   margin-bottom: 0.5rem;
 }
 
@@ -221,6 +264,6 @@
 
 .footer p {
   font-size: 0.65rem;
-  letter-spacing: 0.3em;
-  color: var(--ash-faint);
+  letter-spacing: 0.35em;
+  color: var(--ash-muted);
 }

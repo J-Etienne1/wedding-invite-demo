@@ -1,19 +1,26 @@
+import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './WeddingPage.module.css'
 import EasterEgg from '../components/EasterEgg'
+import BloodRain from '../components/BloodRain'
 
 // ── Replace this with your actual Google Form URL ──────────────────────────
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeZqqP81W9EG8mtIZ5Wm4OXZsELwUyZ490WjTE4aqT4HOZ8sA/viewform?usp=header'
 // ──────────────────────────────────────────────────────────────────────────
 
 export default function WeddingPage() {
+  const [bloodActive, setBloodActive] = useState(false)
+  const handleBloodComplete = useCallback(() => setBloodActive(false), [])
+
   return (
     <div className={styles.page}>
 
+      <a href="#main-content" className={styles.skipLink}>Skip to content</a>
+
       {/* ── Hero ── */}
-      <section className={styles.hero}>
+      <section className={styles.hero} id="main-content" aria-label="Wedding invitation">
         <p className={styles.eyebrow}>You are cordially summoned to witness the union of</p>
-        <h1 className={styles.names}>
+        <h1 className={styles.names} onClick={() => setBloodActive(true)} style={{ cursor: 'default' }}>
           Debbie
           <span className={styles.ampersand}>&</span>
           Jason
@@ -21,15 +28,19 @@ export default function WeddingPage() {
         <p className={styles.date}>Saturday, the 14th of June, 2025</p>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── Ceremony details ── */}
-      <section className={styles.section}>
-        <span className={styles.sectionLabel}><s>Ceremony</s> Party</span>
+      <section className={styles.section} aria-label="Ceremony details">
+        <span className={styles.sectionLabel}>
+          <s aria-hidden="true">Ceremony</s>
+          <span className="sr-only">Ceremony crossed out, replaced with </span>
+          {' '}Party
+        </span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
             <span className={styles.detailTitle}>Venue</span>
@@ -40,21 +51,25 @@ export default function WeddingPage() {
           </div>
           <div className={styles.detailCard}>
             <span className={styles.detailTitle}>Time</span>
-            <p><s>Ceremony</s>  Party at 2:00pm</p>
+            <p>
+              <s aria-hidden="true">Ceremony</s>
+              <span className="sr-only">Ceremony crossed out, replaced with </span>
+              {' '}Party at 2:00pm
+            </p>
             <p>Drinks reception 6:30pm</p>
             <p>Dinner at 8:00pm</p>
           </div>
         </div>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── Reception details ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="Reception details">
         <span className={styles.sectionLabel}>Reception</span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
@@ -72,14 +87,14 @@ export default function WeddingPage() {
         </div>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── RSVP ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="RSVP">
         <span className={styles.sectionLabel}>RSVP</span>
         <div className={styles.rsvpBlock}>
           <p className={styles.rsvpText}>
@@ -100,14 +115,14 @@ export default function WeddingPage() {
         </div>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── After party link ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="After party">
         <div className={styles.afterPartyTeaser}>
           <p className={styles.eyebrowSmall}>The night doesn't end there</p>
           <Link to="/afterparty" className={styles.afterPartyLink}>
@@ -118,11 +133,12 @@ export default function WeddingPage() {
 
       {/* ── Footer ── */}
       <footer className={styles.footer}>
-        <p>Emma & James · 14 June 2025 · Wicklow, Ireland</p>
+        <p>Debbie & Jason · 14 June 2025 · Wicklow, Ireland</p>
       </footer>
 
-      {/* ── Easter egg ── */}
+      {/* ── Easter eggs ── */}
       <EasterEgg />
+      <BloodRain active={bloodActive} onComplete={handleBloodComplete} />
 
     </div>
   )
