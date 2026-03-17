@@ -7,7 +7,7 @@ const hotels = [
     distance: '0.3 miles from venue',
     price: 'From €120/night',
     phone: '+353 404 12345',
-    note: 'Quote "Emma & James" for a reserved room rate',
+    note: 'Quote "Debbie & Jason" for a reserved room rate',
   },
   {
     name: 'Ashford Village Inn',
@@ -29,26 +29,28 @@ export default function AfterPartyPage() {
   return (
     <div className={styles.page}>
 
+      <a href="#main-content" className={styles.skipLink}>Skip to content</a>
+
       {/* ── Back link ── */}
       <nav className={styles.nav}>
         <Link to="/" className={styles.backLink}>← Back to Invite</Link>
       </nav>
 
       {/* ── After party hero ── */}
-      <section className={styles.hero}>
+      <section className={styles.hero} id="main-content" aria-label="After party invitation">
         <p className={styles.eyebrow}>Join us after the reception</p>
         <h1 className={styles.heading}>After Party</h1>
         <p className={styles.subheading}>The night is still young</p>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── After party details ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="After party details">
         <span className={styles.sectionLabel}>Details</span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
@@ -78,14 +80,14 @@ export default function AfterPartyPage() {
         </div>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── Accommodation ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="Accommodation options">
         <span className={styles.sectionLabel}>Accommodation</span>
         <p className={styles.accomIntro}>
           For those travelling from afar, here are some nearby options.
@@ -107,14 +109,14 @@ export default function AfterPartyPage() {
         </div>
       </section>
 
-      <div className={styles.divider}>
+      <div className={styles.divider} aria-hidden="true">
         <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}>† ✦ †</span>
+        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
         <span className={styles.dividerLine} />
       </div>
 
       {/* ── Getting there ── */}
-      <section className={styles.section}>
+      <section className={styles.section} aria-label="Getting there">
         <span className={styles.sectionLabel}>Getting There</span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>

@@ -72,6 +72,7 @@ function BatSVG() {
     <svg
       viewBox="0 0 40 20"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
       style={{ width: 'var(--size)', height: 'auto' }}
     >
       {/* Body */}
@@ -95,6 +96,7 @@ function HeadstoneSVG() {
     <svg
       viewBox="0 0 60 80"
       xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
       style={{ width: '48px', height: 'auto' }}
     >
       {/* Stone base */}
