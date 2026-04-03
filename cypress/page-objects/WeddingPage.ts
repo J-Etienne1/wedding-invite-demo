@@ -1,3 +1,20 @@
+export interface WeddingDetails {
+  date: string;
+  names: string;
+  ceremonyVenue: string;
+  receptionVenue: string;
+}
+
+export interface RsvpFormData {
+  buttonText: string;
+  deadline: string;
+}
+
+export interface NavigationData {
+  linkText: string;
+  expectedUrl: string;
+}
+
 export class WeddingPage {
   namesHeader: string;
   weddingDate: string;
@@ -45,11 +62,23 @@ export class WeddingPage {
     cy.get(this.rsvpButton).should('be.visible');
   }
 
+  verifyRsvpButtonText(expected: string) {
+    cy.get(this.rsvpButton).should('have.text', expected);
+  }
+
   verifyAfterPartyLinkVisible() {
     cy.get(this.afterPartyLink).should('be.visible');
   }
 
+  verifyAfterPartyLinkText(expected: string) {
+    cy.get(this.afterPartyLink).should('have.text', expected);
+  }
+
   clickAfterPartyLink() {
     cy.get(this.afterPartyLink).click();
+  }
+
+  verifyAfterPartyNavigation() {
+    cy.url().should('include', '/afterparty');
   }
 }

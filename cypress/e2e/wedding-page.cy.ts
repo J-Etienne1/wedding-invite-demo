@@ -1,7 +1,44 @@
-import { WeddingPage } from '../page-objects/WeddingPage';
+import { WeddingPage, WeddingDetails, RsvpFormData, NavigationData } from '../page-objects/WeddingPage';
+
+// Type definitions for better test organization
+type TestScenario = {
+  name: string;
+  data: WeddingDetails | RsvpFormData | NavigationData;
+  action: () => void;
+};
 
 describe('Wedding Page', () => {
   const weddingPage = new WeddingPage();
+
+  // Typed test data using interfaces
+  const weddingDetails: WeddingDetails = {
+    date: 'Saturday, the 14th of June, 2025',
+    names: 'Debbie & Jason',
+    ceremonyVenue: 'Urban Brewing',
+    receptionVenue: 'Brookfield Manor'
+  };
+
+  const rsvpData: RsvpFormData = {
+    buttonText: 'RSVP Now',
+    deadline: '1st May 2025'
+  };
+
+  const navigationData: NavigationData = {
+    linkText: 'After Party & Accommodation Details →',
+    expectedUrl: '/afterparty'
+  };
+
+  // Example of using interfaces with test scenarios
+  const testScenarios: TestScenario[] = [
+    {
+      name: 'wedding date display',
+      data: weddingDetails,
+      action: () => {
+        weddingPage.verifyWeddingDateVisible();
+        weddingPage.verifyWeddingDateText((weddingDetails as WeddingDetails).date);
+      }
+    }
+  ];
 
   beforeEach(() => {
     cy.visit('http://localhost:5174/wedding-invite-demo/');
@@ -13,7 +50,7 @@ describe('Wedding Page', () => {
 
   it('displays the wedding date', () => {
     weddingPage.verifyWeddingDateVisible();
-    weddingPage.verifyWeddingDateText('Saturday, the 14th of June, 2025');
+    weddingPage.verifyWeddingDateText(weddingDetails.date);
   });
 
   it('displays the ceremony section', () => {
@@ -27,16 +64,23 @@ describe('Wedding Page', () => {
   it('displays the RSVP section and button', () => {
     weddingPage.verifyRsvpSectionVisible();
     weddingPage.verifyRsvpButtonVisible();
-    cy.get(weddingPage.rsvpButton).should('contain', 'RSVP Now');
+    weddingPage.verifyRsvpButtonText(rsvpData.buttonText);
   });
 
   it('displays the after party link', () => {
     weddingPage.verifyAfterPartyLinkVisible();
-    cy.get(weddingPage.afterPartyLink).should('contain', 'After Party & Accommodation Details');
+    weddingPage.verifyAfterPartyLinkText(navigationData.linkText);
   });
 
   it('can navigate to after party page', () => {
     weddingPage.clickAfterPartyLink();
-    cy.url().should('include', '/afterparty');
+    weddingPage.verifyAfterPartyNavigation();
+  });
+
+  // Example of data-driven test using interfaces
+  testScenarios.forEach((scenario) => {
+    it(`handles ${scenario.name} scenario`, () => {
+      scenario.action();
+    });
   });
 });
