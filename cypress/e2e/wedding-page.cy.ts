@@ -13,7 +13,7 @@ describe('Wedding Page', () => {
 
   it('displays the wedding date', () => {
     weddingPage.verifyWeddingDateVisible();
-    cy.get(weddingPage.weddingDate).should('contain', 'Saturday, the 14th of June, 2025');
+    weddingPage.verifyWeddingDateText('Saturday, the 14th of June, 2025');
   });
 
   it('displays the ceremony section', () => {

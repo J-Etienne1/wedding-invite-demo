@@ -25,6 +25,10 @@ export class WeddingPage {
     cy.get(this.weddingDate).should('be.visible');
   }
 
+  verifyWeddingDateText(expected: string) {
+    cy.get(this.weddingDate).should('have.text', expected);
+  }
+
   verifyCeremonySectionVisible() {
     cy.get(this.ceremonySection).should('be.visible');
   }
