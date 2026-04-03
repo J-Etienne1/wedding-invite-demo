@@ -4,9 +4,9 @@ import styles from './WeddingPage.module.css'
 import EasterEgg from '../components/EasterEgg'
 import BloodRain from '../components/BloodRain'
 
-// ── Replace this with your actual Google Form URL ──────────────────────────
+
 const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeZqqP81W9EG8mtIZ5Wm4OXZsELwUyZ490WjTE4aqT4HOZ8sA/viewform?usp=header'
-// ──────────────────────────────────────────────────────────────────────────
+
 
 export default function WeddingPage() {
   const [bloodActive, setBloodActive] = useState(false)
@@ -20,12 +20,12 @@ export default function WeddingPage() {
       {/* ── Hero ── */}
       <section className={styles.hero} id="main-content" aria-label="Wedding invitation">
         <p className={styles.eyebrow}>You are cordially summoned to witness the union of</p>
-        <h1 className={styles.names} onClick={() => setBloodActive(true)} style={{ cursor: 'default' }}>
+        <h1 className={styles.names} data-testid="names-header" onClick={() => setBloodActive(true)} style={{ cursor: 'default' }}>
           Debbie
           <span className={styles.ampersand}>&</span>
           Jason
         </h1>
-        <p className={styles.date}>Saturday, the 14th of June, 2025</p>
+        <p className={styles.date} data-testid="wedding-date">Saturday, the 14th of June, 2025</p>
       </section>
 
       <div className={styles.divider} aria-hidden="true">
@@ -35,7 +35,7 @@ export default function WeddingPage() {
       </div>
 
       {/* ── Ceremony details ── */}
-      <section className={styles.section} aria-label="Ceremony details">
+      <section className={styles.section} aria-label="Ceremony details" data-testid="ceremony-section">
         <span className={styles.sectionLabel}>
           <s aria-hidden="true">Ceremony</s>
           <span className="sr-only">Ceremony crossed out, replaced with </span>
@@ -69,7 +69,7 @@ export default function WeddingPage() {
       </div>
 
       {/* ── Reception details ── */}
-      <section className={styles.section} aria-label="Reception details">
+      <section className={styles.section} aria-label="Reception details" data-testid="reception-section">
         <span className={styles.sectionLabel}>Reception</span>
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
@@ -94,7 +94,7 @@ export default function WeddingPage() {
       </div>
 
       {/* ── RSVP ── */}
-      <section className={styles.section} aria-label="RSVP">
+      <section className={styles.section} aria-label="RSVP" data-testid="rsvp-section">
         <span className={styles.sectionLabel}>RSVP</span>
         <div className={styles.rsvpBlock}>
           <p className={styles.rsvpText}>
@@ -109,6 +109,7 @@ export default function WeddingPage() {
             target="_blank"
             rel="noopener noreferrer"
             className={styles.rsvpButton}
+            data-testid="rsvp-button"
           >
             RSVP Now
           </a>
@@ -125,7 +126,7 @@ export default function WeddingPage() {
       <section className={styles.section} aria-label="After party">
         <div className={styles.afterPartyTeaser}>
           <p className={styles.eyebrowSmall}>The night doesn't end there</p>
-          <Link to="/afterparty" className={styles.afterPartyLink}>
+          <Link to="/afterparty" className={styles.afterPartyLink} data-testid="after-party-link">
             After Party & Accommodation Details →
           </Link>
         </div>
