@@ -25,7 +25,7 @@ export default function WeddingPage() {
           <span className={styles.ampersand}>&</span>
           Jason
         </h1>
-        <p className={styles.date} data-testid="wedding-date">Saturday, the 14th of June, 2025</p>
+        <p className={styles.date} data-testid="wedding-date">Saturday, the 30th of October, 2027</p>
       </section>
 
       <div className={styles.divider} aria-hidden="true">
