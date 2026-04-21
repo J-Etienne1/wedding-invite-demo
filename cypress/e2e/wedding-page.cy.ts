@@ -12,7 +12,7 @@ describe('Wedding Page', () => {
 
   // Typed test data using interfaces
   const weddingDetails: WeddingDetails = {
-    date: 'Saturday, the 14th of June, 2025',
+    date: 'Saturday, the 30th of Oct, 2027',
     names: 'Debbie & Jason',
     ceremonyVenue: 'Urban Brewing',
     receptionVenue: 'Brookfield Manor'
@@ -20,7 +20,7 @@ describe('Wedding Page', () => {
 
   const rsvpData: RsvpFormData = {
     buttonText: 'RSVP Now',
-    deadline: '1st May 2025'
+    deadline: '1st Aug 2027'
   };
 
   const navigationData: NavigationData = {
