@@ -51,7 +51,39 @@ Any changes you save will hot-reload automatically.
 
 ---
 
-## 3. Add Your Google Form URL
+## 3. Run Tests
+
+### Unit Tests (Vitest)
+
+Run unit tests once:
+```bash
+npm test
+```
+
+Run tests in watch mode (re-runs on file changes):
+```bash
+npm run test:watch
+```
+
+Unit tests are located in `src/**/__tests__/*.test.jsx` and test React components using React Testing Library.
+
+### End-to-End Tests (Cypress)
+
+Open Cypress test runner:
+```bash
+npm run cypress:open
+```
+
+Run Cypress tests headlessly:
+```bash
+npm run cypress:run
+```
+
+Cypress tests are located in `cypress/e2e/` and test the full user workflows.
+
+---
+
+## 4. Add Your Google Form URL
 
 In `src/pages/WeddingPage.jsx`, find this line near the top:
 
@@ -63,7 +95,7 @@ Replace with your actual Google Form URL. The RSVP button will open it in a new 
 
 ---
 
-## 4. Deploy to GitHub Pages
+## 5. Deploy to GitHub Pages
 
 ### Step 1 — Create a GitHub repository
 Go to github.com → New repository → name it `wedding-invite` (or whatever you like).
