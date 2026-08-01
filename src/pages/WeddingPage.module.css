@@ -49,7 +49,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8rem 2rem 6rem;
+  padding: 5rem 2rem 5rem;
   position: relative;
   max-width: 700px;
   margin: 0 auto;
@@ -63,6 +63,58 @@
   background: linear-gradient(to bottom, var(--blood), transparent);
 }
 
+/* ── Portrait ──
+   The artwork is dark line-work on a near-white ground. Rather than fight
+   that against the dark page, we lean into it: a lit, matted portrait
+   hanging on a dark wall. */
+.portraitFigure {
+  margin: 0 0 3rem;
+  animation: fadeUp 1.4s ease 0.1s both;
+}
+
+.portraitFrame {
+  position: relative;
+  padding: clamp(0.5rem, 2vw, 0.9rem);
+  background: #f6ecec;
+  border: 1px solid var(--blood-dim);
+  box-shadow:
+    0 0 0 1px rgba(196, 184, 188, 0.06),
+    0 24px 60px rgba(0, 0, 0, 0.75),
+    0 0 90px rgba(139, 26, 26, 0.18);
+}
+
+.portraitImage {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: clamp(300px, 46vh, 540px);
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Soft inner vignette so the pale artwork settles into its mat
+   instead of reading as a pasted white rectangle. */
+.portraitFrame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 55%,
+    rgba(90, 16, 16, 0.10) 100%
+  );
+}
+
+.portraitCredit {
+  margin-top: 0.9rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  /* Credit the artist legibly — --ash-faint disappears against the page. */
+  color: var(--ash-muted);
+}
+
 .eyebrow {
   font-size: 0.65rem;
   letter-spacing: 0.5em;
@@ -74,9 +126,10 @@
 
 .names {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 13vw, 9.5rem);
+  font-size: clamp(3.4rem, 12vw, 8.5rem);
   line-height: 1;
   color: var(--ash);
+  cursor: default;
   animation: fadeUp 1.2s ease 0.4s both;
   text-shadow:
     0 0 80px rgba(139, 26, 26, 0.5),
@@ -95,6 +148,38 @@
   animation: flicker 4s ease-in-out infinite;
 }
 
+/* Keyboard route to the easter egg. Hidden until focused, so it never
+   competes with the artwork but is never a silent focus trap either. */
+.summonButton {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.summonButton:focus-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  clip: auto;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--blood);
+  background: var(--surface);
+  color: var(--ash);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .date {
   margin-top: 2rem;
   font-family: var(--font-serif);
@@ -103,6 +188,45 @@
   color: var(--ash-dim);
   letter-spacing: 0.08em;
   animation: fadeUp 1.2s ease 0.6s both;
+}
+
+/* ── Sticky section nav ── */
+.stickyNav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(10, 6, 8, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+
+.stickyNavList {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 6vw, 3rem);
+  list-style: none;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0.9rem 1rem;
+}
+
+.stickyNavLink {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--ash-dim);
+  text-decoration: none;
+  padding: 0.35rem 0.1rem;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.stickyNavLink:hover {
+  color: var(--ash);
+  border-bottom-color: var(--blood);
 }
 
 /* ── Divider ── */
@@ -150,11 +274,15 @@
   max-width: 700px;
   margin: 0 auto;
   padding: 0 2rem;
+  /* Keep anchored headings clear of the sticky nav bar. */
+  scroll-margin-top: 5rem;
   animation: fadeIn 1s ease 0.5s both;
 }
 
 .sectionLabel {
   display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
   font-size: 0.6rem;
   letter-spacing: 0.6em;
   text-transform: uppercase;
@@ -187,6 +315,7 @@
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
+  font-weight: 400;
   font-size: 1.1rem;
   color: var(--ash);
   margin-bottom: 0.6rem;
@@ -196,6 +325,108 @@
   font-size: 0.85rem;
   line-height: 1.9;
   color: var(--ash-dim);
+}
+
+/* The one-word joke needs to land before the small print explains it. */
+.dressHeadline {
+  font-family: var(--font-display);
+  font-size: 1.6rem !important;
+  line-height: 1.2 !important;
+  color: var(--ash) !important;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Timeline ── */
+.timeline {
+  list-style: none;
+}
+
+.timelineItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 5rem 1.5rem 1fr;
+  align-items: start;
+  padding-bottom: 2.5rem;
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+/* Connecting line between markers — not after the final entry. */
+.timelineItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: calc(5rem + 0.75rem);
+  top: 1.1rem;
+  bottom: -0.4rem;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--border), var(--border-subtle));
+}
+
+.timelineTime {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--blood-bright);
+  line-height: 1.5;
+  text-align: right;
+  padding-right: 0.75rem;
+  white-space: nowrap;
+}
+
+.timelineMarker {
+  justify-self: center;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.55rem;
+  transform: rotate(45deg);
+  background: var(--blood);
+  border: 1px solid var(--blood-bright);
+}
+
+.timelineBody {
+  padding-left: 0.5rem;
+}
+
+.timelineTitle {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--ash);
+  line-height: 1.4;
+}
+
+.timelineDetail {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--ash-dim);
+}
+
+.timelineTbc {
+  margin-top: 0.4rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--ash-faint);
+}
+
+.timelineFootnote {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: var(--ash-muted);
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .timelineItem { grid-template-columns: 4rem 1.25rem 1fr; }
+  .timelineItem:not(:last-child)::before { left: calc(4rem + 0.625rem); }
+  .timelineTime { font-size: 0.95rem; padding-right: 0.5rem; }
 }
 
 /* ── RSVP block ── */
@@ -261,39 +492,83 @@
   border-color: var(--blood-bright);
 }
 
-/* ── After party teaser ── */
-.afterPartyTeaser {
-  text-align: center;
-  padding: 1rem 0 5rem;
-}
-
-.eyebrowSmall {
-  font-size: 0.65rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
+/* ── Accommodation ── */
+.accomIntro {
+  font-size: 0.85rem;
+  line-height: 1.9;
   color: var(--ash-dim);
-  margin-bottom: 1.2rem;
+  margin-bottom: 2.5rem;
 }
 
-.afterPartyLink {
+.hotelList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .hotelList { grid-template-columns: 1fr; }
+}
+
+.hotelCard {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 1.75rem 1.5rem;
+  transition: border-color 0.4s ease;
+}
+
+.hotelCard:hover {
+  border-color: var(--ash-faint);
+}
+
+.hotelName {
   font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.5rem;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--ash);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.hotelDistance {
+  font-size: 0.8rem;
+  color: var(--ash-muted);
+  margin-bottom: 1rem;
+}
+
+.hotelReference {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--ash-dim);
+  margin-bottom: 1.25rem;
+}
+
+.hotelReference strong {
+  font-weight: 400;
+  color: var(--blood-bright);
+}
+
+/* Tap target on mobile is the point of this — keep it generous. */
+.hotelPhone {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--blood-dim);
   color: var(--ash);
   text-decoration: none;
-  border-bottom: 1px solid var(--ash-faint);
-  padding-bottom: 3px;
-  transition: color 0.3s ease, border-color 0.3s ease;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.afterPartyLink:hover {
-  color: var(--blood-bright);
-  border-color: var(--blood);
+.hotelPhone:hover {
+  background: var(--blood);
+  border-color: var(--blood-bright);
 }
 
 /* ── Footer ── */
 .footer {
   text-align: center;
+  margin-top: 6rem;
   padding: 2rem;
   font-size: 0.65rem;
   letter-spacing: 0.35em;

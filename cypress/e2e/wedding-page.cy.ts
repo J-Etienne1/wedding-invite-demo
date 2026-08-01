@@ -2,49 +2,28 @@ import {
   WeddingPage,
   WeddingDetails,
   RsvpFormData,
-  NavigationData,
+  SectionLink,
 } from "../page-objects/WeddingPage";
-
-// Type definitions for better test organization
-type TestScenario = {
-  name: string;
-  data: WeddingDetails | RsvpFormData | NavigationData;
-  action: () => void;
-};
 
 describe("Wedding Page", () => {
   const weddingPage = new WeddingPage();
 
-  // Typed test data using interfaces
   const weddingDetails: WeddingDetails = {
-    date: "Saturday, the 30th of Oct, 2027",
+    date: "Saturday, the 30th of October, 2027",
     names: "Debbie & Jason",
-    ceremonyVenue: "Urban Brewing",
-    receptionVenue: "Brookfield Manor",
+    venue: "Urban Brewing",
   };
 
   const rsvpData: RsvpFormData = {
     buttonText: "RSVP Now",
-    deadline: "1st Aug 2027",
+    deadline: "PLACEHOLDER — set reply-by date",
   };
 
-  const navigationData: NavigationData = {
-    linkText: "After Party & Accommodation Details →",
-    expectedUrl: "/afterparty",
-  };
-
-  // Example of using interfaces with test scenarios
-  const testScenarios: TestScenario[] = [
-    {
-      name: "wedding date display",
-      data: weddingDetails,
-      action: () => {
-        weddingPage.verifyWeddingDateVisible();
-        weddingPage.verifyWeddingDateText(
-          (weddingDetails as WeddingDetails).date,
-        );
-      },
-    },
+  const sectionLinks: SectionLink[] = [
+    { label: "Details", anchorId: "details" },
+    { label: "Evening", anchorId: "timeline" },
+    { label: "RSVP", anchorId: "rsvp" },
+    { label: "Stay", anchorId: "stay" },
   ];
 
   beforeEach(() => {
@@ -60,34 +39,43 @@ describe("Wedding Page", () => {
     weddingPage.verifyWeddingDateText(weddingDetails.date);
   });
 
-  it("displays the ceremony section", () => {
-    weddingPage.verifyCeremonySectionVisible();
+  it("loads the portrait artwork", () => {
+    weddingPage.verifyPortraitLoaded();
   });
 
-  it("displays the reception section", () => {
-    weddingPage.verifyReceptionSectionVisible();
+  it("displays the venue details", () => {
+    weddingPage.verifyDetailsSectionVisible();
+    cy.get(weddingPage.detailsSection).should("contain.text", weddingDetails.venue);
+  });
+
+  it("displays the full evening timeline", () => {
+    weddingPage.verifyTimelineSectionVisible();
+    weddingPage.verifyTimelineEntry("5:00pm", "Drinks & Canapés");
+    weddingPage.verifyTimelineEntry("6:00pm", "Dinner");
+    weddingPage.verifyTimelineEntry("9:00pm", "The Party");
   });
 
   it("displays the RSVP section and button", () => {
     weddingPage.verifyRsvpSectionVisible();
     weddingPage.verifyRsvpButtonVisible();
     weddingPage.verifyRsvpButtonText(rsvpData.buttonText);
+    cy.get(weddingPage.rsvpSection).should("contain.text", rsvpData.deadline);
   });
 
-  it("displays the after party link", () => {
-    weddingPage.verifyAfterPartyLinkVisible();
-    weddingPage.verifyAfterPartyLinkText(navigationData.linkText);
+  it("displays accommodation options with callable numbers", () => {
+    weddingPage.verifyStaySectionVisible();
+    weddingPage.verifyHotelCount(2);
   });
 
-  it("can navigate to after party page", () => {
-    weddingPage.clickAfterPartyLink();
-    weddingPage.verifyAfterPartyNavigation();
+  it("keeps the section nav visible while scrolling", () => {
+    cy.scrollTo("bottom");
+    weddingPage.verifyStickyNavVisible();
   });
 
-  // Example of data-driven test using interfaces
-  testScenarios.forEach((scenario) => {
-    it(`handles ${scenario.name} scenario`, () => {
-      scenario.action();
+  sectionLinks.forEach(({ label, anchorId }) => {
+    it(`jumps to the ${label} section from the nav`, () => {
+      weddingPage.clickNavLink(label);
+      weddingPage.verifySectionInView(anchorId);
     });
   });
 });

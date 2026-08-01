@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 import WeddingPage from '../WeddingPage'
+import { couple, venue, timeline, rsvp, accommodation, nav } from '../../content'
 
 // Mock the child components
 vi.mock('../../components/EasterEgg', () => ({
@@ -10,20 +10,14 @@ vi.mock('../../components/EasterEgg', () => ({
 }))
 
 vi.mock('../../components/BloodRain', () => ({
-  default: ({ active, onComplete }) => (
+  default: ({ active }) => (
     <div data-testid="blood-rain" data-active={active}>
       BloodRain
     </div>
   )
 }))
 
-const renderWeddingPage = () => {
-  return render(
-    <BrowserRouter>
-      <WeddingPage />
-    </BrowserRouter>
-  )
-}
+const renderWeddingPage = () => render(<WeddingPage />)
 
 describe('WeddingPage', () => {
   beforeEach(() => {
@@ -35,38 +29,74 @@ describe('WeddingPage', () => {
       renderWeddingPage()
       const namesHeader = screen.getByTestId('names-header')
       expect(namesHeader).toBeInTheDocument()
-      expect(namesHeader).toHaveTextContent('Debbie')
-      expect(namesHeader).toHaveTextContent('Jason')
+      expect(namesHeader).toHaveTextContent(couple.nameOne)
+      expect(namesHeader).toHaveTextContent(couple.nameTwo)
     })
 
     it('should render the wedding date', () => {
       renderWeddingPage()
-      const dateElement = screen.getByTestId('wedding-date')
-      expect(dateElement).toBeInTheDocument()
-      expect(dateElement).toHaveTextContent('Saturday, the 30th of October, 2027')
+      expect(screen.getByTestId('wedding-date')).toHaveTextContent(couple.date)
     })
 
-    it('should render ceremony section with details', () => {
+    it('should render the portrait with descriptive alt text', () => {
       renderWeddingPage()
-      const ceremonySection = screen.getByTestId('ceremony-section')
-      expect(ceremonySection).toBeInTheDocument()
-      expect(ceremonySection).toHaveTextContent('Urban Brewing')
-      expect(ceremonySection).toHaveTextContent('Party at 2:00pm')
+      const portraitImage = screen.getByTestId('portrait')
+      expect(portraitImage).toBeInTheDocument()
+      expect(portraitImage.getAttribute('alt')).not.toHaveLength(0)
+      expect(portraitImage).toHaveAttribute('srcSet')
     })
 
-    it('should render reception section with details', () => {
+    it('should render the venue details with a maps link', () => {
       renderWeddingPage()
-      const receptionSection = screen.getByTestId('reception-section')
-      expect(receptionSection).toBeInTheDocument()
-      expect(receptionSection).toHaveTextContent('Brookfield Manor')
-      expect(receptionSection).toHaveTextContent('Black tie optional')
+      const detailsSection = screen.getByTestId('details-section')
+      expect(detailsSection).toHaveTextContent(venue.name)
+      venue.addressLines.forEach((line) => {
+        expect(detailsSection).toHaveTextContent(line)
+      })
+
+      const mapLink = within(detailsSection).getByText('Open in maps')
+      expect(mapLink).toHaveAttribute('href', venue.mapsUrl)
+      expect(mapLink).toHaveAttribute('target', '_blank')
+      expect(mapLink).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
-    it('should render RSVP section', () => {
+    it('should render every timeline entry with its time', () => {
       renderWeddingPage()
-      const rsvpSection = screen.getByTestId('rsvp-section')
-      expect(rsvpSection).toBeInTheDocument()
-      expect(rsvpSection).toHaveTextContent('Kindly reply by 1st May 2025')
+      const timelineSection = screen.getByTestId('timeline-section')
+      timeline.forEach((entry) => {
+        expect(timelineSection).toHaveTextContent(entry.time)
+        expect(timelineSection).toHaveTextContent(entry.title)
+      })
+    })
+
+    it('should flag unconfirmed times as to be confirmed', () => {
+      renderWeddingPage()
+      const timelineSection = screen.getByTestId('timeline-section')
+      const unconfirmedCount = timeline.filter((entry) => entry.tbc).length
+      expect(
+        within(timelineSection).getAllByText('time to be confirmed')
+      ).toHaveLength(unconfirmedCount)
+    })
+
+    it('should render RSVP section with the reply-by date', () => {
+      renderWeddingPage()
+      expect(screen.getByTestId('rsvp-section')).toHaveTextContent(rsvp.deadline)
+    })
+
+    it('should render an accommodation card per hotel with a tel: link', () => {
+      renderWeddingPage()
+      const staySection = screen.getByTestId('stay-section')
+
+      accommodation.hotels.forEach((hotel) => {
+        expect(staySection).toHaveTextContent(hotel.name)
+        expect(staySection).toHaveTextContent(hotel.reference)
+
+        const phoneLink = within(staySection).getByText(hotel.phone)
+        expect(phoneLink).toHaveAttribute(
+          'href',
+          `tel:${hotel.phone.replace(/\s/g, '')}`
+        )
+      })
     })
   })
 
@@ -74,26 +104,33 @@ describe('WeddingPage', () => {
     it('should render RSVP button with correct link', () => {
       renderWeddingPage()
       const rsvpButton = screen.getByTestId('rsvp-button')
-      expect(rsvpButton).toBeInTheDocument()
-      expect(rsvpButton).toHaveAttribute('href', expect.stringContaining('docs.google.com/forms'))
+      expect(rsvpButton).toHaveAttribute('href', rsvp.formUrl)
       expect(rsvpButton).toHaveAttribute('target', '_blank')
       expect(rsvpButton).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
     it('RSVP button should have correct text', () => {
       renderWeddingPage()
-      const rsvpButton = screen.getByTestId('rsvp-button')
-      expect(rsvpButton).toHaveTextContent('RSVP Now')
+      expect(screen.getByTestId('rsvp-button')).toHaveTextContent(rsvp.buttonText)
     })
   })
 
-  describe('Navigation', () => {
-    it('should render after party link', () => {
+  describe('Section navigation', () => {
+    it('should render a nav link per section, pointing at an in-page anchor', () => {
       renderWeddingPage()
-      const afterPartyLink = screen.getByTestId('after-party-link')
-      expect(afterPartyLink).toBeInTheDocument()
-      expect(afterPartyLink).toHaveTextContent('After Party & Accommodation Details →')
-      expect(afterPartyLink).toHaveAttribute('href', '/afterparty')
+      const stickyNav = screen.getByTestId('sticky-nav')
+
+      nav.forEach((item) => {
+        const link = within(stickyNav).getByText(item.label)
+        expect(link).toHaveAttribute('href', `#${item.id}`)
+      })
+    })
+
+    it('every nav anchor should resolve to a section on the page', () => {
+      const { container } = renderWeddingPage()
+      nav.forEach((item) => {
+        expect(container.querySelector(`#${item.id}`)).not.toBeNull()
+      })
     })
   })
 
@@ -101,7 +138,6 @@ describe('WeddingPage', () => {
     it('should have skip to content link', () => {
       renderWeddingPage()
       const skipLink = screen.getByText('Skip to content')
-      expect(skipLink).toBeInTheDocument()
       expect(skipLink).toHaveAttribute('href', '#main-content')
     })
 
@@ -111,13 +147,18 @@ describe('WeddingPage', () => {
       expect(mainContent).toHaveAttribute('id', 'main-content')
     })
 
-    it('should have proper aria labels on sections', () => {
+    it('should expose section headings as real headings', () => {
       renderWeddingPage()
-      expect(screen.getByLabelText('Wedding invitation')).toBeInTheDocument()
-      expect(screen.getByLabelText('Ceremony details')).toBeInTheDocument()
-      expect(screen.getByLabelText('Reception details')).toBeInTheDocument()
-      expect(screen.getByLabelText('RSVP')).toBeInTheDocument()
-      expect(screen.getByLabelText('After party')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 3, name: 'Venue' })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 3, name: 'Dress Code' })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 2, name: /The Evening/ })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 2, name: /RSVP/ })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { level: 2, name: /Accommodation/ })).toBeInTheDocument()
+    })
+
+    it('should have a single top-level heading', () => {
+      renderWeddingPage()
+      expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
     })
   })
 
@@ -137,28 +178,28 @@ describe('WeddingPage', () => {
     it('should activate blood rain effect when names header is clicked', async () => {
       const user = userEvent.setup()
       renderWeddingPage()
-      const namesHeader = screen.getByTestId('names-header')
-      
-      await user.click(namesHeader)
-      
-      // The blood rain should be active after clicking
+
+      await user.click(screen.getByTestId('names-header'))
+
       expect(screen.getByTestId('blood-rain')).toHaveAttribute('data-active', 'true')
     })
 
-    it('names header should have pointer cursor style', () => {
+    it('should activate blood rain from the keyboard', async () => {
+      const user = userEvent.setup()
       renderWeddingPage()
-      const namesHeader = screen.getByTestId('names-header')
-      expect(namesHeader).toHaveStyle({ cursor: 'default' })
-    })
-  })
 
-  describe('Maps Link', () => {
-    it('should render maps link for venue', () => {
+      screen.getByTestId('summon-button').focus()
+      await user.keyboard('{Enter}')
+
+      expect(screen.getByTestId('blood-rain')).toHaveAttribute('data-active', 'true')
+    })
+
+    it('should offer a real button as the keyboard route to the easter egg', () => {
       renderWeddingPage()
-      const mapLinks = screen.getAllByText('maps')
-      expect(mapLinks.length).toBeGreaterThan(0)
-      expect(mapLinks[0]).toHaveAttribute('href', expect.stringContaining('maps.app.goo.gl'))
-      expect(mapLinks[0]).toHaveAttribute('target', '_blank')
+      const summonButton = screen.getByTestId('summon-button')
+      expect(summonButton.tagName).toBe('BUTTON')
+      // The heading must stay a heading — no role override for the egg.
+      expect(screen.getByTestId('names-header')).not.toHaveAttribute('role')
     })
   })
 })

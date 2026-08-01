@@ -1,15 +1,35 @@
 import { useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
 import styles from './WeddingPage.module.css'
 import EasterEgg from '../components/EasterEgg'
 import BloodRain from '../components/BloodRain'
+import {
+  couple,
+  venue,
+  dressCode,
+  timeline,
+  rsvp,
+  accommodation,
+  portrait,
+  nav,
+} from '../content'
 
-
-const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeZqqP81W9EG8mtIZ5Wm4OXZsELwUyZ490WjTE4aqT4HOZ8sA/viewform?usp=header'
-
+function Divider() {
+  return (
+    <div className={styles.divider} aria-hidden="true">
+      <span className={styles.dividerLine} />
+      <span className={styles.dividerIcon}>
+        <span className={styles.invertedCross}>†</span>
+        <span>✦</span>
+        <span className={styles.invertedCross}>†</span>
+      </span>
+      <span className={styles.dividerLine} />
+    </div>
+  )
+}
 
 export default function WeddingPage() {
   const [bloodActive, setBloodActive] = useState(false)
+  const triggerBlood = useCallback(() => setBloodActive(true), [])
   const handleBloodComplete = useCallback(() => setBloodActive(false), [])
 
   return (
@@ -17,124 +37,191 @@ export default function WeddingPage() {
 
       <a href="#main-content" className={styles.skipLink}>Skip to content</a>
 
-      {/* ── Hero ── */}
+      {/* ── Hero: portrait, names, date ── */}
       <section className={styles.hero} id="main-content" aria-label="Wedding invitation">
-        <p className={styles.eyebrow}>You are cordially summoned to witness the union of</p>
-        <h1 className={styles.names} data-testid="names-header" onClick={() => setBloodActive(true)} style={{ cursor: 'default' }}>
-          Debbie
+        <figure className={styles.portraitFigure}>
+          <div className={styles.portraitFrame}>
+            <img
+              className={styles.portraitImage}
+              src={portrait.src}
+              srcSet={`${portrait.srcSmall} 800w, ${portrait.src} 1200w`}
+              sizes="(max-width: 600px) 90vw, 560px"
+              alt={portrait.alt}
+              width="1200"
+              height="1698"
+              data-testid="portrait"
+            />
+          </div>
+          <figcaption className={styles.portraitCredit}>{portrait.credit}</figcaption>
+        </figure>
+
+        <p className={styles.eyebrow}>{couple.eyebrow}</p>
+
+        {/* The heading stays a plain heading — giving it role="button" for the
+            easter egg would strip its heading semantics from screen readers.
+            Tap/click triggers the effect; the button below is the keyboard
+            equivalent, hidden until focused. */}
+        <h1
+          className={styles.names}
+          data-testid="names-header"
+          onClick={triggerBlood}
+        >
+          {couple.nameOne}
           <span className={styles.ampersand}>&</span>
-          Jason
+          {couple.nameTwo}
         </h1>
-        <p className={styles.date} data-testid="wedding-date">Saturday, the 30th of October, 2027</p>
+
+        <button
+          type="button"
+          className={styles.summonButton}
+          onClick={triggerBlood}
+          data-testid="summon-button"
+        >
+          Summon the bats
+        </button>
+
+        <p className={styles.date} data-testid="wedding-date">{couple.date}</p>
       </section>
 
-      <div className={styles.divider} aria-hidden="true">
-        <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
-        <span className={styles.dividerLine} />
-      </div>
+      {/* ── Sticky section nav ── */}
+      <nav className={styles.stickyNav} aria-label="Jump to section" data-testid="sticky-nav">
+        <ul className={styles.stickyNavList}>
+          {nav.map((item) => (
+            <li key={item.id}>
+              <a href={`#${item.id}`} className={styles.stickyNavLink}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-      {/* ── Ceremony details ── */}
-      <section className={styles.section} aria-label="Ceremony details" data-testid="ceremony-section">
-        <span className={styles.sectionLabel}>
+      {/* ── Venue & dress code ── */}
+      <section
+        className={styles.section}
+        id="details"
+        aria-labelledby="details-heading"
+        data-testid="details-section"
+      >
+        <h2 className={styles.sectionLabel} id="details-heading">
           <s aria-hidden="true">Ceremony</s>
           <span className="sr-only">Ceremony crossed out, replaced with </span>
           {' '}Party
-        </span>
+        </h2>
+
         <div className={styles.detailsGrid}>
           <div className={styles.detailCard}>
-            <span className={styles.detailTitle}>Venue</span>
-            <p>Urban Brewing</p>
-            <p>CHQ Building, Custom House Quay, IFSC</p>
-            <p>Dublin, D01 Y6P5</p>
-            <p><a href="https://maps.app.goo.gl/BRx5t59BWMYhSsfR6" target="_blank" rel="noopener noreferrer" className={styles.mapLink}>maps</a></p>
-          </div>
-          <div className={styles.detailCard}>
-            <span className={styles.detailTitle}>Time</span>
+            <h3 className={styles.detailTitle}>Venue</h3>
+            <p>{venue.name}</p>
+            {venue.addressLines.map((line) => <p key={line}>{line}</p>)}
             <p>
-              <s aria-hidden="true">Ceremony</s>
-              <span className="sr-only">Ceremony crossed out, replaced with </span>
-              {' '}Party at 2:00pm
+              <a
+                href={venue.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.mapLink}
+              >
+                Open in maps
+              </a>
             </p>
-            <p>Drinks reception 6:30pm</p>
-            <p>Dinner at 8:00pm</p>
+          </div>
+
+          <div className={styles.detailCard}>
+            <h3 className={styles.detailTitle}>Dress Code</h3>
+            <p className={styles.dressHeadline}>{dressCode.headline}</p>
+            {dressCode.lines.map((line) => <p key={line}>{line}</p>)}
           </div>
         </div>
       </section>
 
-      <div className={styles.divider} aria-hidden="true">
-        <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
-        <span className={styles.dividerLine} />
-      </div>
+      <Divider />
 
-      {/* ── Reception details ── */}
-      <section className={styles.section} aria-label="Reception details" data-testid="reception-section">
-        <span className={styles.sectionLabel}>Reception</span>
-        <div className={styles.detailsGrid}>
-          <div className={styles.detailCard}>
-            <span className={styles.detailTitle}>Venue</span>
-            <p>Brookfield Manor</p>
-            <p>Manor Road, Ashford</p>
-            <p>Co. Wicklow, Ireland</p>
-          </div>
-          <div className={styles.detailCard}>
-            <span className={styles.detailTitle}>Dress Code</span>
-            <p>Black tie optional</p>
-            <p>Ladies: formal attire</p>
-            <p>Gentlemen: suit & tie</p>
-          </div>
-        </div>
+      {/* ── Timeline of the evening ── */}
+      <section
+        className={styles.section}
+        id="timeline"
+        aria-labelledby="timeline-heading"
+        data-testid="timeline-section"
+      >
+        <h2 className={styles.sectionLabel} id="timeline-heading">The Evening</h2>
+
+        <ol className={styles.timeline}>
+          {timeline.map((entry) => (
+            <li key={entry.title} className={styles.timelineItem}>
+              <span className={styles.timelineTime}>{entry.time}</span>
+              <span className={styles.timelineMarker} aria-hidden="true" />
+              <div className={styles.timelineBody}>
+                <h3 className={styles.timelineTitle}>{entry.title}</h3>
+                <p className={styles.timelineDetail}>{entry.detail}</p>
+                {entry.tbc && (
+                  <p className={styles.timelineTbc}>time to be confirmed</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <p className={styles.timelineFootnote}>
+          Everything happens at {venue.name} — one venue, no taxis in between.
+        </p>
       </section>
 
-      <div className={styles.divider} aria-hidden="true">
-        <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
-        <span className={styles.dividerLine} />
-      </div>
+      <Divider />
 
       {/* ── RSVP ── */}
-      <section className={styles.section} aria-label="RSVP" data-testid="rsvp-section">
-        <span className={styles.sectionLabel}>RSVP</span>
+      <section
+        className={styles.section}
+        id="rsvp"
+        aria-labelledby="rsvp-heading"
+        data-testid="rsvp-section"
+      >
+        <h2 className={styles.sectionLabel} id="rsvp-heading">RSVP</h2>
         <div className={styles.rsvpBlock}>
           <p className={styles.rsvpText}>
-            Kindly reply by <strong>1st May 2025</strong>
+            Kindly reply by <strong>{rsvp.deadline}</strong>
           </p>
-          <p className={styles.rsvpSub}>
-            Please let us know if you can join us, any dietary requirements,
-            and whether you'll be bringing a plus one.
-          </p>
+          <p className={styles.rsvpSub}>{rsvp.note}</p>
           <a
-            href={GOOGLE_FORM_URL}
+            href={rsvp.formUrl}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.rsvpButton}
             data-testid="rsvp-button"
           >
-            RSVP Now
+            {rsvp.buttonText}
           </a>
         </div>
       </section>
 
-      <div className={styles.divider} aria-hidden="true">
-        <span className={styles.dividerLine} />
-        <span className={styles.dividerIcon}><span className={styles.invertedCross}>†</span><span>✦</span><span className={styles.invertedCross}>†</span></span>
-        <span className={styles.dividerLine} />
-      </div>
+      <Divider />
 
-      {/* ── After party link ── */}
-      <section className={styles.section} aria-label="After party">
-        <div className={styles.afterPartyTeaser}>
-          <p className={styles.eyebrowSmall}>The night doesn't end there</p>
-          <Link to="/afterparty" className={styles.afterPartyLink} data-testid="after-party-link">
-            After Party & Accommodation Details →
-          </Link>
+      {/* ── Accommodation ── */}
+      <section
+        className={styles.section}
+        id="stay"
+        aria-labelledby="stay-heading"
+        data-testid="stay-section"
+      >
+        <h2 className={styles.sectionLabel} id="stay-heading">Accommodation</h2>
+        <p className={styles.accomIntro}>{accommodation.intro}</p>
+
+        <div className={styles.hotelList}>
+          {accommodation.hotels.map((hotel) => (
+            <div key={hotel.name} className={styles.hotelCard}>
+              <h3 className={styles.hotelName}>{hotel.name}</h3>
+              <p className={styles.hotelDistance}>{hotel.distance}</p>
+              <p className={styles.hotelReference}>
+                Quote <strong>{hotel.reference}</strong> when booking
+              </p>
+              <a href={`tel:${hotel.phone.replace(/\s/g, '')}`} className={styles.hotelPhone}>
+                {hotel.phone}
+              </a>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ── Footer ── */}
       <footer className={styles.footer}>
-        <p>Debbie & Jason · 14 June 2025 · Leixlip, Ireland</p>
+        <p>{couple.nameOne} &amp; {couple.nameTwo} · {couple.location}</p>
       </footer>
 
       {/* ── Easter eggs ── */}

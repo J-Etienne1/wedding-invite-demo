@@ -1,8 +1,7 @@
 export interface WeddingDetails {
   date: string;
   names: string;
-  ceremonyVenue: string;
-  receptionVenue: string;
+  venue: string;
 }
 
 export interface RsvpFormData {
@@ -10,28 +9,32 @@ export interface RsvpFormData {
   deadline: string;
 }
 
-export interface NavigationData {
-  linkText: string;
-  expectedUrl: string;
+export interface SectionLink {
+  label: string;
+  anchorId: string;
 }
 
 export class WeddingPage {
   namesHeader: string;
   weddingDate: string;
-  ceremonySection: string;
-  receptionSection: string;
+  portrait: string;
+  stickyNav: string;
+  detailsSection: string;
+  timelineSection: string;
   rsvpSection: string;
+  staySection: string;
   rsvpButton: string;
-  afterPartyLink: string;
 
   constructor() {
     this.namesHeader = '[data-testid="names-header"]';
     this.weddingDate = '[data-testid="wedding-date"]';
-    this.ceremonySection = '[data-testid="ceremony-section"]';
-    this.receptionSection = '[data-testid="reception-section"]';
+    this.portrait = '[data-testid="portrait"]';
+    this.stickyNav = '[data-testid="sticky-nav"]';
+    this.detailsSection = '[data-testid="details-section"]';
+    this.timelineSection = '[data-testid="timeline-section"]';
     this.rsvpSection = '[data-testid="rsvp-section"]';
+    this.staySection = '[data-testid="stay-section"]';
     this.rsvpButton = '[data-testid="rsvp-button"]';
-    this.afterPartyLink = '[data-testid="after-party-link"]';
   }
 
   verifyNamesHeaderVisible() {
@@ -46,12 +49,34 @@ export class WeddingPage {
     cy.get(this.weddingDate).should('have.text', expected);
   }
 
-  verifyCeremonySectionVisible() {
-    cy.get(this.ceremonySection).should('be.visible');
+  verifyPortraitLoaded() {
+    cy.get(this.portrait)
+      .should('be.visible')
+      .and(($img) => {
+        // naturalWidth is 0 when the file failed to load — catches a broken
+        // asset path under the GitHub Pages sub-path.
+        expect($img[0].naturalWidth).to.be.greaterThan(0);
+      });
   }
 
-  verifyReceptionSectionVisible() {
-    cy.get(this.receptionSection).should('be.visible');
+  verifyDetailsSectionVisible() {
+    cy.get(this.detailsSection).should('be.visible');
+  }
+
+  verifyTimelineSectionVisible() {
+    cy.get(this.timelineSection).should('be.visible');
+  }
+
+  verifyTimelineEntry(time: string, title: string) {
+    cy.get(this.timelineSection).should('contain.text', time).and('contain.text', title);
+  }
+
+  verifyStaySectionVisible() {
+    cy.get(this.staySection).should('be.visible');
+  }
+
+  verifyHotelCount(expected: number) {
+    cy.get(`${this.staySection} a[href^="tel:"]`).should('have.length', expected);
   }
 
   verifyRsvpSectionVisible() {
@@ -66,19 +91,16 @@ export class WeddingPage {
     cy.get(this.rsvpButton).should('have.text', expected);
   }
 
-  verifyAfterPartyLinkVisible() {
-    cy.get(this.afterPartyLink).should('be.visible');
+  verifyStickyNavVisible() {
+    cy.get(this.stickyNav).should('be.visible');
   }
 
-  verifyAfterPartyLinkText(expected: string) {
-    cy.get(this.afterPartyLink).should('have.text', expected);
+  clickNavLink(label: string) {
+    cy.get(this.stickyNav).contains('a', label).click();
   }
 
-  clickAfterPartyLink() {
-    cy.get(this.afterPartyLink).click();
-  }
-
-  verifyAfterPartyNavigation() {
-    cy.url().should('include', '/afterparty');
+  verifySectionInView(anchorId: string) {
+    cy.url().should('include', `#${anchorId}`);
+    cy.get(`#${anchorId}`).should('be.visible');
   }
 }
