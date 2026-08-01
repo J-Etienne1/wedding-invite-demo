@@ -35,9 +35,8 @@ export const venue = {
 export const dressCode = {
   headline: 'Black',
   lines: [
-    'We wear black. Always.',
-    'You, however, are free —',
-    'come as you feel most yourself.',
+    'We wear black',
+    'You, however, are free come as you feel most yourself.',
   ],
 }
 
