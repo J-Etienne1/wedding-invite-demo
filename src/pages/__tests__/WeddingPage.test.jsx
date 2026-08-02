@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import WeddingPage from '../WeddingPage'
-import { couple, venue, timeline, rsvp, accommodation, nav } from '../../content'
+import { couple, venue, timeline, rsvp, accommodation, nav, portrait } from '../../content'
 
 // Mock the child components
 vi.mock('../../components/EasterEgg', () => ({
@@ -44,6 +44,14 @@ describe('WeddingPage', () => {
       expect(portraitImage).toBeInTheDocument()
       expect(portraitImage.getAttribute('alt')).not.toHaveLength(0)
       expect(portraitImage).toHaveAttribute('srcSet')
+    })
+
+    it('should render the portrait credit as a link to the artist Instagram', () => {
+      renderWeddingPage()
+      const creditLink = screen.getByRole('link', { name: portrait.credit })
+      expect(creditLink).toHaveAttribute('href', 'https://www.instagram.com/loki_pookadubh/')
+      expect(creditLink).toHaveAttribute('target', '_blank')
+      expect(creditLink).toHaveAttribute('rel', 'noopener noreferrer')
     })
 
     it('should render the venue details with a maps link', () => {
